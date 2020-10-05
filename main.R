@@ -1,16 +1,16 @@
-rm(list=ls())
+# rm(list=ls())
 
-# Ici on définit l'espace de travail. MODIFIEZ-LE pour que cela corresponde 
+# Ici on définit l'espace de travail. MODIFIEZ-LE pour que cela corresponde
 # à l'emplacement sur votre propre ordinateur
-setwd("~/Documents/Projets R/CaraNetwork")
+# setwd("~/Documents/Projets R/CaraNetwork")
 
 # Ici on charge le package igraph qui sert à faire de l'analyse de réseaux
 # Installation (si besoin) et chargement des packages requis
 packages <- c("igraph","RColorBrewer","networkD3")
 if (length(setdiff(packages, rownames(installed.packages()))) > 0) {
-  install.packages(setdiff(packages, rownames(installed.packages())))  
+  install.packages(setdiff(packages, rownames(installed.packages())))
 }
-library(igraph) 
+library(igraph)
 library(RColorBrewer)
 library(networkD3)
 
@@ -24,10 +24,12 @@ source("sources/plotnework.R")
 
 # Placer le(s) fichier(s) dans le répertoire reprojetrseauxdepersonnages
 
-plotnetwork(fichierindex = "1875.IleMysterieuse-adj.csv",
-            fichierattr1 = "1875.IleMysterieuse-attr.csv", #si absent = NULL,
-            fichierattr2 = "1875.IleMysterieuse-attr2.csv" , #si absent = NULL,
-            seuil = 3)
+args = commandArgs(trailingOnly = TRUE)
+
+plotnetwork(fichierindex = args[2],
+            fichierattr1 = if (length(args) < 3) {NULL} else {args[3]}, #si absent = NULL,
+            fichierattr2 = if (length(args) < 4) {NULL} else {args[4]}, #si absent = NULL,
+            seuil = as.numeric(args[1]))
 
 ################
 ### EN MASSE ###

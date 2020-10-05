@@ -15,7 +15,7 @@ losange <- function(coords, v=NULL, params) {
 }
 
 # clips as a circle
-add.vertex.shape("losange", 
+add.vertex.shape("losange",
                  plot=losange)
 
 # triangle vertex shape
@@ -51,7 +51,7 @@ mystar <- function(coords, v=NULL, params) {
   if (length(norays) != 1 && !is.null(v)) {
     norays <- norays[v]
   }
-  
+
   mapply(coords[,1], coords[,2], vertex.color, vertex.size, norays,
          FUN=function(x, y, bg, size, nor) {
            symbols(x=x, y=y, bg=bg,

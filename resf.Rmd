@@ -4,7 +4,7 @@ subtitle: "Yannick Rochat et Mathieu Triclot, ReS Futurae, 10 | 2017"
 output: html_notebook
 ---
 
-Ce notebook est un support à l'article **Les réseaux de personnages de science-fiction : échantillons de lectures intermédiaires** paru dans le volume 10 | 2017 de la revue ReS Futurae et disponible à l'adresse http://journals.openedition.org/resf/1183 
+Ce notebook est un support à l'article **Les réseaux de personnages de science-fiction : échantillons de lectures intermédiaires** paru dans le volume 10 | 2017 de la revue ReS Futurae et disponible à l'adresse http://journals.openedition.org/resf/1183
 
 ## Comment ça marche
 
@@ -15,7 +15,7 @@ Vous pouvez utiliser ce notebook de plusieurs manières, notamment :
 * en consultant la page web statique http://mtriclot.github.io/belfort
 * en téléchargeant ou « clonant » le dossier à l'adresse https://github.com/mtriclot/Belfort puis en lançant dans RStudio le document "resf.Rmd"
 
-Dans le second cas, le document est interactif et nécessite d'être excécuté avant consultation. Pour plus d'informations : http://rmarkdown.rstudio.com/r_notebooks.html 
+Dans le second cas, le document est interactif et nécessite d'être excécuté avant consultation. Pour plus d'informations : http://rmarkdown.rstudio.com/r_notebooks.html
 
 ## Préparer les réseaux
 
@@ -61,8 +61,8 @@ Chargement de deux fonctions permettant d'extraire les attributs des noeuds des 
 
 ```{r}
 get_attr1 <- function(x) {
-  attr1 <- x %>% 
-    str_replace("-adj.csv", "") %>% 
+  attr1 <- x %>%
+    str_replace("-adj.csv", "") %>%
     str_c("-attr.csv")
   if(attr1 %in% list_of_sources) {
     return(attr1)
@@ -72,8 +72,8 @@ get_attr1 <- function(x) {
 }
 
 get_attr2 <- function(x) {
-  attr2 <- x %>% 
-    str_replace("-adj.csv", "") %>% 
+  attr2 <- x %>%
+    str_replace("-adj.csv", "") %>%
     str_c("-attr2.csv")
   if(attr2 %in% list_of_sources) {
     return(attr2)
@@ -87,7 +87,7 @@ On génére les réseaux :
 
 * 3 et 10 représentent à chaque fois le seuil choisi (la "force" du lien).
 * unconnected signifie que l'on garde tous les sommets.
-* connected signifie que l'on garde la plus grande composante connexe (c'est-à-dire le plus grand groupe de personnages connectés). 
+* connected signifie que l'on garde la plus grande composante connexe (c'est-à-dire le plus grand groupe de personnages connectés).
 
 ```{r}
 
@@ -133,12 +133,12 @@ Définition et application d'une fonction fonction calculant le degré.
 ```{r}
 get_degree <- function(g) {
   res <- list(length(g))
-  
+
   for (i in 1:length(g)) {
     res[[i]] <- as_tbl_graph(g[[i]])
     V(res[[i]])$degree <- degree(res[[i]])
   }
-  
+
   return(res)
 }
 
@@ -158,11 +158,11 @@ titles <- str_replace_all(string = list_of_adjacency_sources,
 
 get_title <- function(g) {
   res <- g
-  
+
   for (i in 1:length(g)) {
     res[[i]]$title <- titles[i]
   }
-  
+
   return(res)
 }
 

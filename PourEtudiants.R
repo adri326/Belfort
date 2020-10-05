@@ -1,21 +1,21 @@
-### Script accompagnant l'article de 
+### Script accompagnant l'article de
 ### Mathieu Triclot et Yannick Rochat
 ### soumis à la revue ReS Futurae
 ### à l'été 2017
 
 
-### RESTE A FAIRE 
+### RESTE A FAIRE
 ### inclure occurrences
 ### fixer les personnages
 ### + voir les issues sur github
 
 
-rm(list = ls())
+# rm(list = ls())
 
 packages <- c("igraph","RColorBrewer","networkD3","stringr","ggraph","readr",
               "tidygraph","gridExtra","extrafont")
 if (length(setdiff(packages, rownames(installed.packages()))) > 0) {
-  install.packages(setdiff(packages, rownames(installed.packages())))  
+  install.packages(setdiff(packages, rownames(installed.packages())))
 }
 
 
@@ -31,10 +31,10 @@ loadfonts()
 set_graph_style(plot_margin = margin(1, 1, 1, 1))
 
 
-### working directory 
+### working directory
 
-wd <- "~/Documents/Projets R/Belfort-master"
-setwd(wd)
+# wd <- "~/Documents/Projets R/Belfort-master"
+# setwd(wd)
 source("sources/create_graph.R")
 
 setwd("reprojetrseauxdepersonnages")
@@ -52,8 +52,8 @@ list_of_adjacency_sources <-
 ### Chargement des données et création des réseaux
 
 get_attr1 <- function(x) {
-  attr1 <- x %>% 
-    str_replace("-adj.csv", "") %>% 
+  attr1 <- x %>%
+    str_replace("-adj.csv", "") %>%
     str_c("-attr.csv")
   if(attr1 %in% list_of_sources) {
     return(attr1)
@@ -63,8 +63,8 @@ get_attr1 <- function(x) {
 }
 
 get_attr2 <- function(x) {
-  attr2 <- x %>% 
-    str_replace("-adj.csv", "") %>% 
+  attr2 <- x %>%
+    str_replace("-adj.csv", "") %>%
     str_c("-attr2.csv")
   if(attr2 %in% list_of_sources) {
     return(attr2)
@@ -131,12 +131,12 @@ setwd(wd)
 
 get_degree <- function(g) {
   res <- list(length(g))
-  
+
   for (i in 1:length(g)) {
     res[[i]] <- as_tbl_graph(g[[i]])
     V(res[[i]])$degree <- degree(res[[i]])
   }
-  
+
   return(res)
 }
 
@@ -146,16 +146,16 @@ g_3_connected <- g_3_connected %>% get_degree
 g_10_connected <- g_10_connected %>% get_degree
 
 
-### Définition d'une fonction insérant le titre 
+### Définition d'une fonction insérant le titre
 ### dans les données du réseau
 
 get_title <- function(g) {
   res <- g
-  
+
   for (i in 1:length(g)) {
     res[[i]]$title <- titles[i]
   }
-  
+
   return(res)
 }
 
@@ -229,7 +229,7 @@ draw2 <- function(g) {
       alpha = .8,
       segment.colour = "pink"
     ) +
-    scale_size_area(max_size = 5, "Degré") + 
+    scale_size_area(max_size = 5, "Degré") +
     scale_shape_manual(values = c(15, 16, 17, 18, 4, 8), "Attribut secondaire") +
     scale_color_brewer(palette = "Set1", "Type")
 }

@@ -1,10 +1,10 @@
-### Script accompagnant l'article de 
+### Script accompagnant l'article de
 ### Mathieu Triclot et Yannick Rochat
 ### soumis à la revue ReS Futurae
 ### à l'été 2017
 
 
-### RESTE A FAIRE 
+### RESTE A FAIRE
 ### inclure occurrences
 ### fixer les personnages
 ### + voir les issues sur github
@@ -24,7 +24,7 @@ loadfonts()
 set_graph_style(plot_margin = margin(1, 1, 1, 1))
 
 
-### working directory 
+### working directory
 
 wd <- "~/Documents/GitHub/Belfort"
 setwd(wd)
@@ -46,8 +46,8 @@ list_of_adjacency_sources <-
 ### Chargement des données et création des réseaux
 
 get_attr1 <- function(x) {
-  attr1 <- x %>% 
-    str_replace("-adj.csv", "") %>% 
+  attr1 <- x %>%
+    str_replace("-adj.csv", "") %>%
     str_c("-attr.csv")
   if(attr1 %in% list_of_sources) {
     return(attr1)
@@ -57,8 +57,8 @@ get_attr1 <- function(x) {
 }
 
 get_attr2 <- function(x) {
-  attr2 <- x %>% 
-    str_replace("-adj.csv", "") %>% 
+  attr2 <- x %>%
+    str_replace("-adj.csv", "") %>%
     str_c("-attr2.csv")
   if(attr2 %in% list_of_sources) {
     return(attr2)
@@ -116,12 +116,12 @@ setwd(wd)
 
 get_degree <- function(g) {
   res <- list(length(g))
-  
+
   for (i in 1:length(g)) {
     res[[i]] <- as_tbl_graph(g[[i]])
     V(res[[i]])$degree <- degree(res[[i]])
   }
-  
+
   return(res)
 }
 
@@ -131,16 +131,16 @@ g_3_connected <- g_3_connected %>% get_degree
 g_10_connected <- g_10_connected %>% get_degree
 
 
-### Définition d'une fonction insérant le titre 
+### Définition d'une fonction insérant le titre
 ### dans les données du réseau
 
 get_title <- function(g) {
   res <- g
-  
+
   for (i in 1:length(g)) {
     res[[i]]$title <- titles[i]
   }
-  
+
   return(res)
 }
 
@@ -243,10 +243,10 @@ ggsave("viz/Image06.png", bloodmoney_centaure_plot, width = 16, height = 7)
 
 
 # ### ILE MYSTERIEUSE
-# 
+#
 # ile_mysterieuse <- which(str_detect(titles, "IleMysterieuse"))
 # ile_mysterieuse_plot <- draw(g_3_connected[[ile_mysterieuse]])
-# 
+#
 # ggsave("viz/ile_mysterieuse.png", ile_mysterieuse_plot, width = 10, height = 7)
 
 
@@ -298,7 +298,7 @@ draw2 <- function(g) {
       alpha = .8,
       segment.colour = "pink"
     ) +
-    scale_size_area(max_size = 5, "Degré") + 
+    scale_size_area(max_size = 5, "Degré") +
     scale_shape_manual(values = c(15, 16, 17, 18, 4, 8), "Attribut secondaire") +
     scale_color_brewer(palette = "Set1", "Type")
 }
@@ -323,7 +323,7 @@ id3 <-
     stringsAsFactors = FALSE
   )
 
-V(g_3_connected[[ile_mysterieuse]])$id3 <- 
+V(g_3_connected[[ile_mysterieuse]])$id3 <-
   id3[, 2][match(V(g_3_connected[[ile_mysterieuse]])$name, id3[, 1])]
 
 ile_mysterieuse_plot3 <- ggraph(g_3_connected[[ile_mysterieuse]]) +
@@ -339,7 +339,7 @@ ile_mysterieuse_plot3 <- ggraph(g_3_connected[[ile_mysterieuse]]) +
     alpha = .8,
     segment.colour = "pink"
   ) +
-  scale_size_area(max_size = 5, "Degré") + 
+  scale_size_area(max_size = 5, "Degré") +
   scale_shape_manual(values = c(15, 16, 17, 18, 4, 8), "Attribut secondaire") +
   scale_color_brewer(palette = "Set1", "Type")
 
@@ -370,7 +370,7 @@ jekyll_hyde_plot <- ggraph(g_3_connected[[jekyll_hyde]]) +
     alpha = .8,
     segment.colour = "pink"
   ) +
-  scale_size_area(max_size = 5, "Degré") + 
+  scale_size_area(max_size = 5, "Degré") +
   scale_color_brewer(palette = "Set1", "Type")
 
 ggsave("viz/Image15.png", jekyll_hyde_plot, width = 10, height = 7)
@@ -400,7 +400,7 @@ eighty_four_plot <- ggraph(g_3_connected[[eighty_four]]) +
     alpha = .8,
     segment.colour = "pink"
   ) +
-  scale_size_area(max_size = 5, "Degré") + 
+  scale_size_area(max_size = 5, "Degré") +
   scale_color_brewer(palette = "Set1", "Type")
 
 ggsave("viz/Image17.png", eighty_four_plot, width = 10, height = 7)
@@ -422,7 +422,7 @@ equilibrium_plot <- ggraph(g_3_connected[[equilibrium]]) +
     alpha = .8,
     segment.colour = "pink"
   ) +
-  scale_size_area(max_size = 5, "Degré") + 
+  scale_size_area(max_size = 5, "Degré") +
   scale_color_brewer(palette = "Set1", "Type")
 
 ggsave("viz/Image18.png", equilibrium_plot, width = 10, height = 7)
@@ -444,7 +444,7 @@ gattaca_plot <- ggraph(g_3_connected[[gattaca]]) +
     alpha = .8,
     segment.colour = "pink"
   ) +
-  scale_size_area(max_size = 5, "Degré") + 
+  scale_size_area(max_size = 5, "Degré") +
   scale_color_brewer(palette = "Set1", "Type")
 
 ggsave("viz/Image19.png", gattaca_plot, width = 10, height = 7)
@@ -466,7 +466,7 @@ stalker_plot <- ggraph(g_3_connected[[stalker]]) +
     alpha = .8,
     segment.colour = "pink"
   ) +
-  scale_size_area(max_size = 5, "Degré") + 
+  scale_size_area(max_size = 5, "Degré") +
   scale_color_brewer(palette = "Set1", "Type")
 
 ggsave("viz/Image20.png", stalker_plot, width = 10, height = 7)
@@ -488,7 +488,7 @@ neuromancien_plot <- ggraph(g_3_connected[[neuromancien]]) +
     alpha = .8,
     segment.colour = "pink"
   ) +
-  scale_size_area(max_size = 5, "Degré") + 
+  scale_size_area(max_size = 5, "Degré") +
   scale_color_brewer(palette = "Set1", "Type")
 
 ggsave("viz/Image21.png", neuromancien_plot, width = 10, height = 7)
@@ -510,7 +510,7 @@ final_fantasy_vii_plot <- ggraph(g_3_connected[[final_fantasy_vii]]) +
     alpha = .8,
     segment.colour = "pink"
   ) +
-  scale_size_area(max_size = 5, "Degré") + 
+  scale_size_area(max_size = 5, "Degré") +
   scale_color_brewer(palette = "Set1", "Type")
 
 ggsave("viz/Image22.png", final_fantasy_vii_plot, width = 10, height = 7)
@@ -521,7 +521,7 @@ ggsave("viz/Image22.png", final_fantasy_vii_plot, width = 10, height = 7)
 ###########
 
 
-### Cette fonction permettait de visualiser un 
+### Cette fonction permettait de visualiser un
 ### réseau et la distribution des degrés côte-à-côte
 
 # plot_networks <- function(g) {
@@ -536,66 +536,66 @@ ggsave("viz/Image22.png", final_fantasy_vii_plot, width = 10, height = 7)
 #       label.size = .1,
 #       family = "Helvetica"
 #     )
-#   
+#
 #   plot2 <- ggplot(as_tibble(g), aes(degree)) +
 #     stat_ecdf() +
 #     theme_gray() +
 #     ggtitle(str_c("Distribution des degrés de ", g$title))
-#   
+#
 #   grid.arrange(plot1, plot2, nrow = 1, ncol = 2)
-#   
+#
 # }
-# 
+#
 # pdf(
 #   "g_3_unconnected.pdf",
 #   width = 14,
 #   height = 7,
 #   onefile = TRUE
 # )
-# 
+#
 # for (i in 1:length(g_3_unconnected)) {
 #   plot_networks(g_3_unconnected[[i]])
 # }
-# 
+#
 # dev.off()
-# 
+#
 # pdf(
 #   "g_10_unconnected.pdf",
 #   width = 14,
 #   height = 7,
 #   onefile = TRUE
 # )
-# 
+#
 # for (i in 1:length(g_10_unconnected)) {
 #   plot_networks(g_10_unconnected[[i]])
 # }
-# 
+#
 # dev.off()
-# 
+#
 # pdf(
 #   "g_3_connected.pdf",
 #   width = 14,
 #   height = 7,
 #   onefile = TRUE
 # )
-# 
+#
 # for (i in 1:length(g_3_connected)) {
 #   plot_networks(g_3_connected[[i]])
 # }
-# 
+#
 # dev.off()
-# 
+#
 # pdf(
 #   "g_10_connected.pdf",
 #   width = 14,
 #   height = 7,
 #   onefile = TRUE
 # )
-# 
+#
 # for (i in 1:length(g_10_connected)) {
 #   plot_networks(g_10_connected[[i]])
 # }
-# 
+#
 # dev.off()
 
 
