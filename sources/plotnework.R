@@ -6,27 +6,27 @@
 # fichierattr2 <- "1953.Fahrenheit451-attr2.csv"
 # seuil <- 3
 
-plotnetwork <- function(fichierindex,fichierattr1,fichierattr2,seuil){
+plotnetwork <- function(fichierindex,fichierattr1,fichierattr2,seuil) {
   rep <- "./"
 
   ## On teste si les attributs secondaires sont présents
   ## procédure débile qui engendre 3 create graphs à la suite
   if (is.null(fichierattr1) && is.null(fichierattr2)) {
-    g <- create_graph(	fichier = paste (rep,fichierindex,sep=""),
-                        seuil = seuil,
-                        connexe = TRUE)
+    g <- create_graph(fichier = paste (rep,fichierindex,sep=""),
+                     seuil = seuil,
+                     connexe = TRUE)
   } else if (!is.null(fichierattr1) && is.null(fichierattr2)) {
-    g <- create_graph(	fichier = paste (rep,fichierindex,sep=""),
-                       attr1 = paste (rep,fichierattr1,sep=""),
-                       seuil = seuil,
-                       connexe = TRUE)
+    g <- create_graph(fichier = paste (rep,fichierindex,sep=""),
+                      attr1 = paste (rep,fichierattr1,sep=""),
+                      seuil = seuil,
+                      connexe = TRUE)
   }
   if (!is.null(fichierattr2)) {
-    g <- create_graph(	fichier = paste (rep,fichierindex,sep=""),
-                       attr1 = paste (rep,fichierattr1,sep=""),
-                       attr2 = paste (rep,fichierattr2,sep=""),
-                       seuil = seuil,
-                       connexe = TRUE)
+    g <- create_graph(fichier = paste (rep,fichierindex,sep=""),
+                      attr1 = paste (rep,fichierattr1,sep=""),
+                      attr2 = paste (rep,fichierattr2,sep=""),
+                      seuil = seuil,
+                      connexe = TRUE)
   }
 
   ############
@@ -93,14 +93,14 @@ plotnetwork <- function(fichierindex,fichierattr1,fichierattr2,seuil){
   # De façon à fixer les couleurs sur le graph
   # Check orthographe science -> Science
 
-  if (!is.null(V(g)$id1))	{
+  if (!is.null(V(g)$id1)) {
     V(g)$id1 <- paste (toupper(substr(V(g)$id1,1,1)),substr(V(g)$id1,2,nchar(V(g)$id1)), sep="")
     nonSTP <- levels (factor(V(g)$id1, exclude = c("Science", "Technique", "Politique")))
     STP <- factor((V(g)$id1), order=TRUE,
                   levels=c("Science", "Technique", "Politique",nonSTP))
     # vertex.color <- brewer.pal(length(unique((STP))), "Set1")[STP]
     vertex.color <- brewer.pal(length (levels (STP)),"Set1")[STP]
-    }
+  }
 
   # Une forme par défaut
   vertex.shape <- "circle"
@@ -172,33 +172,33 @@ plotnetwork <- function(fichierindex,fichierattr1,fichierattr2,seuil){
     }
 
   # la légende pour le premier attribut (la couleur)
-  if (g$windows > 0) {		plot.new()
+  if (g$windows > 0) {plot.new()
     par(mar=c(0,0,0,0))
-    legend(	x="center",
-            legend = levels(STP),
-            pch = 21,
-            col = "black",
-            pt.bg = brewer.pal(length (levels (STP)),"Set1"),
-            cex = g$windows + 1,
-            title = g$attr1,
-            bty = "n",
-            horiz = TRUE,
-            pt.cex = 4)}
+    legend(x="center",
+           legend = levels(STP),
+           pch = 21,
+           col = "black",
+           pt.bg = brewer.pal(length (levels (STP)),"Set1"),
+           cex = g$windows + 1,
+           title = g$attr1,
+           bty = "n",
+           horiz = TRUE,
+           pt.cex = 4)}
 
   # la légende pour le second attribut (la forme)
   # faire correspondre les pch aux formes employées
 
-  if (g$windows > 1) {	plot.new()
+  if (g$windows > 1) {plot.new()
     par(mar=c(0,0,0,0))
-    legend(	x="center",
-            legend = levels(factor(V(g)$id2)),
-            pch = c(19,15,18,17,11,10)[1:length(levels(factor(V(g)$id2)))],
-            col = "black",
-            cex = 3,
-            title = g$attr2,
-            bty = "n",
-            horiz = TRUE,
-            pt.cex = 4)}
+    legend(x="center",
+           legend = levels(factor(V(g)$id2)),
+           pch = c(19,15,18,17,11,10)[1:length(levels(factor(V(g)$id2)))],
+           col = "black",
+           cex = 3,
+           title = g$attr2,
+           bty = "n",
+           horiz = TRUE,
+           pt.cex = 4)}
   if (!is.null(V(g)$id2)) {vertex.shape <- c("circle", "square", "losange","rectangle","csquare","sphere")[factor(V(g)$id2)]}
 
   # Et on ferme le tunnel
@@ -246,16 +246,16 @@ plotnetwork <- function(fichierindex,fichierattr1,fichierattr2,seuil){
     # la légende pour le premier attribut (la couleur)
     plot.new()
     par(mar=c(0,0,0,0))
-    legend(	x="center",
-            legend = levels(STP),
-              pch = 21,
-              col = "black",
-              pt.bg = brewer.pal(length(unique((STP))), "Set1"),
-              cex = g$windows + 1,
-              title = g$attr1,
-              bty = "n",
-              horiz = TRUE,
-              pt.cex = 4)
+    legend(x="center",
+           legend = levels(STP),
+           pch = 21,
+           col = "black",
+           pt.bg = brewer.pal(length(unique((STP))), "Set1"),
+           cex = g$windows + 1,
+           title = g$attr1,
+           bty = "n",
+           horiz = TRUE,
+           pt.cex = 4)
     # Et on ferme le tunnel
     dev.off()
 

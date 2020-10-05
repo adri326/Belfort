@@ -1,4 +1,4 @@
-# rm(list=ls())
+rm(list=ls())
 
 # Ici on définit l'espace de travail. MODIFIEZ-LE pour que cela corresponde
 # à l'emplacement sur votre propre ordinateur
@@ -24,7 +24,7 @@ source("sources/plotnework.R")
 
 # Placer le(s) fichier(s) dans le répertoire reprojetrseauxdepersonnages
 
-args = commandArgs(trailingOnly = TRUE)
+args <- commandArgs(trailingOnly = TRUE)
 
 plotnetwork(fichierindex = args[2],
             fichierattr1 = if (length(args) < 3) {NULL} else {args[3]}, #si absent = NULL,
