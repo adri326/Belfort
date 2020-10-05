@@ -15,7 +15,7 @@ losange <- function(coords, v=NULL, params) {
 }
 
 # clips as a circle
-add.vertex.shape("losange",
+igraph::add.vertex.shape("losange",
                  plot=losange)
 
 # triangle vertex shape
@@ -34,7 +34,7 @@ mytriangle <- function(coords, v=NULL, params) {
            add=TRUE, inches=FALSE)
  }
 # clips as a circle
-add_shape("triangle", clip=shapes("circle")$clip,
+igraph::add_shape("triangle", clip=igraph::shapes("circle")$clip,
                   plot=mytriangle)
 
 # generic star vertex shape, with a parameter for number of rays
@@ -61,5 +61,5 @@ mystar <- function(coords, v=NULL, params) {
 }
 
 # no clipping, edges will be below the vertices anyway
-add_shape("star", clip=shape_noclip,
+igraph::add_shape("star", clip=igraph::shape_noclip,
           plot=mystar, parameters=list(vertex.norays=5))

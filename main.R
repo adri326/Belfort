@@ -6,11 +6,11 @@ rm(list=ls())
 
 # Ici on charge le package igraph qui sert à faire de l'analyse de réseaux
 # Installation (si besoin) et chargement des packages requis
-packages <- c("igraph","RColorBrewer","networkD3")
+packages <- c("igraph", "RColorBrewer", "networkD3", "stringr")
 if (length(setdiff(packages, rownames(installed.packages()))) > 0) {
   install.packages(setdiff(packages, rownames(installed.packages())))
 }
-library(igraph)
+# library(igraph)
 library(RColorBrewer)
 library(networkD3)
 

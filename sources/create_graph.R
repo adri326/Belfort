@@ -23,11 +23,11 @@ create_graph <-
     # Maintenant la matrice n'est plus composée que de 0 et de 1
 
     # On crée un graphe biparti à partir de cette matrice d'incidence
-    g0 <- graph.incidence(mat,
+    g0 <- igraph::graph.incidence(mat,
                           multiple = TRUE)
 
     # On extrait la liste des arêtes, et on la copie deux fois
-    tab <- get.edgelist(g0)
+    tab <- igraph::get.edgelist(g0)
     tab2 <- tab1 <- tab
 
     # Ici, chaque page n se transforme en couple de pages (n-1, n)
@@ -56,12 +56,12 @@ create_graph <-
     tab0 <- tab0[!duplicated(tab0), ]
 
     # On crée le graphe, qui est déjà biparti
-    g0 <- graph.edgelist(tab0, directed = FALSE)
+    g0 <- igraph::graph.edgelist(tab0, directed = FALSE)
 
     # Ceci est nécessaire pour pouvoir faire la projection et
     # obtenir le réseau de personnages (deux persos sont connectés
     # s'ils apparaissent sur les mêmes couples de pages)
-    V(g0)$type <- bipartite.mapping(g0)$type
+    igraph::V(g0)$type <- igraph::bipartite.mapping(g0)$type
 
     # Et l'étudiant introduira un fichier avec les attributs secondaires
     # À noter que les sommets apparaissent dans le même ordre que dans la matrice
@@ -74,7 +74,7 @@ create_graph <-
           sep = ",",
           stringsAsFactors = FALSE
         )
-      V(g0)$id1 <- id1[, 2][match(V(g0)$name, id1[, 1])]
+      igraph::V(g0)$id1 <- id1[, 2][match(igraph::V(g0)$name, id1[, 1])]
     }
 
     if (nchar(attr2) > 0) {
@@ -86,11 +86,11 @@ create_graph <-
           sep = ",",
           stringsAsFactors = FALSE
         )
-      V(g0)$id2 <- id2[, 2][match(V(g0)$name, id2[, 1])]
+      igraph::V(g0)$id2 <- id2[, 2][match(igraph::V(g0)$name, id2[, 1])]
     }
 
-    # Voilà la projection…
-    g <- bipartite.projection(g0)$proj1
+    # Voilà la projection...
+    g <- igraph::bipartite.projection(g0)$proj1
 
     # On compte le nombre d'attributs
     g$windows <- 0
@@ -108,18 +108,20 @@ create_graph <-
     # À noter que le choix d'un seuil égal à 3 peut être modifié
     # Un nombre (entier) plus bas permettra d'inclure plus d'arêtes
     # Un nombre (entier) plus grand permettra d'inclure moins d'arêtes
-    g <- g - E(g)[weight < seuil]
+    g <- g - igraph::E(g)[weight < seuil]
 
     # Si giant est égal à TRUE, nous ne conservons que la composante géante
     if (connexe == TRUE) {
-      g <-
-        induced.subgraph(g, vids = which(clusters(g)$membership == which.max(clusters(g)$csize)))
+      clusters <- igraph::clusters(g)
+      g <- igraph::induced.subgraph(
+        g,
+        vids = which(clusters$membership == which.max(clusters$csize))
+      )
     }
 
     # On fixe un layout
     # g$layout <- layout.norm(layout.fruchterman.reingold(g, repulserad = vcount(g)^3.5), -1, 1, -1, 1)
-    g$layout <-
-      layout.norm(layout.fruchterman.reingold(g),-1, 1,-1, 1)
+    g$layout <- igraph::layout.norm(igraph::layout.fruchterman.reingold(g),-1, 1,-1, 1)
     return(g)
   }
 
