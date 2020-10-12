@@ -1,18 +1,42 @@
-# Belfort
+# Character relationship visualization through graphs
 
-Voici un support de scripts pour l'analyse de réseaux de personnages.
+## How it works:
 
-1. Choisir une oeuvre.
-2. Récolter les données.
-3. Les transformer en un réseau.
-4. L'analyser.
- 
-# Comment ça marche ?
+The [original paper (French)](https://journals.openedition.org/resf/1183) describes in detail the technique that this software implements.
 
-1. Copier ce dossier "Belfort" sur son ordinateur en cliquant à droite sur "Clone in Desktop".
-2. Installer [RStudio](http://www.rstudio.com/).
-3. Ouvrir le fichier [par_ici.R](https://github.com/mtriclot/Belfort/blob/master/par_ici.R) qui devrait lancer naturellement RStudio. Si ça n'est pas le cas, alors d'abord lancer RStudio et ouvrir le fichier ensuite.
-4. À la [ligne 5](https://github.com/mtriclot/Belfort/blob/master/par_ici.R#L5) du document, remplacer ce qu'il y a entre les guillemets (par défaut setwd("~/Documents/Projets R/CaraNetwork") qui correspond à l'emplacement du dossier Belfort sur ma propre machine) par l'emplacement du dossier sur votre propre machine, c'est-à-dire l'endroit où vous l'avez cloné.
-5. Une fois que c'est fait, vous pouvez remplacer à la [ligne 29](https://github.com/mtriclot/Belfort/blob/master/par_ici.R#L29) le premier fichier au format csv entre guillemets par votre propre fichier avec les correspondances personnage-occurrence, par exemple en faisant un glisser-déposer de l'icône du document directement dans le script (fonctionne sur Mac, quid de linux/windows ?).
-6. Puis, sur la même ligne : remplacer le second fichier au format csv par le vôtre contenant les catégorisations/rôles/attributs/descriptions des personnages. Il faudrait que le nombre de catégories reste bas, par ex. "science", "technique", "politique", etc. Jeter un coup d'oeil au fichier exemple "assomoir-attr.csv". S'il n'y a pas de fichier secondaire, indiquer NULL.
-7. Ensuite il n'y a plus qu'à sélectionner tout le document et à l'exécuter (sur Mac : "Edit" -> "Execute", ou alors le raccourci clavier "cmd+enter"), ce qui devrait créer dans le dossier "Belfort" un visuel du réseau au format pdf.
+In short, it does the following:
+
+- reads a `csv` file with the present of each character for each timewise unit (this usually corresponds to a page, a paragraph, a sequence, a minute, etc.)
+- optionally reads up to two other `csv` files to describe one or two charactersitics of the characters
+- creates an incidence graph based on the simultaneous presence of characters
+- prunes out the characters that have little interaction / simultaneous presence
+- produce a graph whose edges are weighted, based on the number of interactions had
+- output such graph as a pdf file
+
+## Usage
+
+*Note: This repository is a fork of the original one and claims to be a cleaner version of it. If you are a student of M.Triclot, I recommend you use [the original repository](https://github.com/mtriclot/Belfort) instead.*
+
+Clone this repository:
+
+```sh
+git clone https://github.com/adri326/character-graph
+cd character-graph
+```
+
+Make sure to have [R](https://wiki.archlinux.org/index.php/R) installed and run the main script:
+
+```sh
+R -f main.R --args 5 data/2013.cloud_atlas-adj.csv data/2013.cloud_atlas-attr.csv
+```
+
+The syntax for running the main script as-is is:
+
+```sh
+R -f main.R --args <threshold> <presence-file> [<property-1> [<property-2>]]
+```
+
+- `<threshold>` is the minimum number of simultaneous presence that a character must have (a value of 10 is usually enough to filter out most secondary "noise" characters)
+- `<presence-file>` is the `csv` file describing the presence of each character at each given step
+- `<property-1>` is the `csv` file describing the primary property of each character (will be transcribed as the color of their vertice)
+- `<property-2>` is the `csv` file describing the secundary property of each character (will be transcribed as the shape of their vertice)
