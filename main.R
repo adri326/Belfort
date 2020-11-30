@@ -8,7 +8,7 @@ rm(list=ls())
 # Installation (si besoin) et chargement des packages requis
 packages <- c("igraph", "RColorBrewer", "networkD3", "stringr")
 if (length(setdiff(packages, rownames(installed.packages()))) > 0) {
-  install.packages(setdiff(packages, rownames(installed.packages())))
+  install.packages(setdiff(packages, rownames(installed.packages())), repos = "http://cran.us.r-project.org")
 }
 # library(igraph)
 library(RColorBrewer)
