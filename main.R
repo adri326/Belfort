@@ -74,5 +74,5 @@ plot <- plot +
     legend.key = ggplot2::element_rect(fill = "white"),
   )
 
-ggplot2::ggsave(paste("out/", trimws(args[1]), ".pdf", sep = ""), plot, width = 10, height = 7)
-ggplot2::ggsave(paste("out/", trimws(args[1]), ".png", sep = ""), plot, width = 10, height = 7)
+ggplot2::ggsave(paste("out/", trimws(args[1]), "-", args[2], ".pdf", sep = ""), plot, width = 10, height = 7)
+ggplot2::ggsave(paste("out/", trimws(args[1]), "-", args[2], ".png", sep = ""), plot, width = 10, height = 7)
