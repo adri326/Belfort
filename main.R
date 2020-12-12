@@ -14,15 +14,18 @@ if (length(setdiff(packages, rownames(installed.packages()))) > 0) {
 library(RColorBrewer)
 library(networkD3)
 
-source("sources/create_graph.R")
-source("sources/shapes.R")
-source("sources/plotnework.R")
+source("src/create_graph.R")
+source("src/shapes.R")
+source("src/plotnework.R")
+
+# Create the out/ directory if it isn't already there
+if (!dir.exists(c("out"))[1]) {
+  dir.create("out/")
+}
 
 #############################
 ### LA CREATION DU RESEAU ###
 #############################
-
-# Placer le(s) fichier(s) dans le répertoire reprojetrseauxdepersonnages
 
 args <- commandArgs(trailingOnly = TRUE)
 

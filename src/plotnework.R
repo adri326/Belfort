@@ -49,7 +49,7 @@ plotnetwork <- function(fichierindex,fichierattr1,fichierattr2,seuil) {
   if (g$windows > 0) {nomfichier <- paste (date,".",oeuvre,".s",seuil,".a1.pdf",sep="")}
   if (g$windows > 1) {nomfichier <- paste (date,".",oeuvre,".s",seuil,".a2.pdf",sep="")}
 
-  pdf("output.pdf", height = 14 + g$windows, width = 19.8)
+  pdf("out/output.pdf", height = 14 + g$windows, width = 19.8)
 
   layout(matrix(1:(1+g$windows), nrow = 1+g$windows), widths = rep(1,1+g$windows), heights = c(10,rep(1,g$windows)))
 
@@ -135,11 +135,7 @@ plotnetwork <- function(fichierindex,fichierattr1,fichierattr2,seuil) {
   edge.width <- weight.normalised*8+2
 
   # On définit une palette de gris pour faire un dégradé sur les arêtes
-  print(1)
-  print((1.2*max_weight)/(2.4*max_weight)+0.5)
-  print(grey(0:1))
-  print(grey(0:(1.2*max_weight)/(2.4*max_weight)+0.5))
-  gris <- grey(0:(1.2*max_weight)/(2.4*max_weight)+0.25)
+  gris <- grey(0:(1.2*max_weight)/(2.4*max_weight))
 
   # La couleur des arêtes
   edge.color <- gris[max_weight - (igraph::E(g)$weight - min_weight + 1)]
@@ -161,94 +157,113 @@ plotnetwork <- function(fichierindex,fichierattr1,fichierattr2,seuil) {
 
   # On ajoute un titre
   # titre <- paste (oeuvre, " | seuil ",seuil, sep="")
-  title (main = titre, cex.main = 3, family ="mono")
+  title(main = titre, cex.main = 3, family = "mono")
 
   # Indicateurs pour graph sans attributs secondaires
   if (g$windows == 0) {
     par(mar=c(5,0,0,0))
-    nbperso <- nrow (read.csv(paste (rep,fichierindex, sep="")))
-    nbpages <- ncol (read.csv(paste (rep,fichierindex, sep="")))
-    indicateurs <- paste ("seuil :", seuil, "|",
-                          nbperso, "personnages |",
-                          round (nbperso/nbpages,2), "perso/page", "\n",
-                          "centr. :", round (igraph::centralization.degree(g)$centralization,2),
-                          "| betweenness :", round (igraph::centralization.betweenness(g)$centralization,2),
-                          "| eigen :", round (igraph::centralization.evcent(g)$centralization,2),
-                          sep=" ")
-    title (sub = indicateurs, cex.sub = 2, family ="mono")
-    }
+    nbperso <- nrow(read.csv(paste(rep,fichierindex, sep="")))
+    nbpages <- ncol(read.csv(paste(rep,fichierindex, sep="")))
+    indicateurs <- paste(
+      "seuil :",
+      seuil, "|",
+      nbperso,
+      "personnages |",
+      round(nbperso/nbpages, 2),
+      "perso/page", "\n",
+      "centr. :",
+      round(igraph::centralization.degree(g)$centralization, 2),
+      "| betweenness :",
+      round(igraph::centralization.betweenness(g)$centralization, 2),
+      "| eigen :",
+      round(igraph::centralization.evcent(g)$centralization, 2),
+      sep=" "
+    )
+    title(sub = indicateurs, cex.sub = 2, family = "mono")
+  }
 
   # la légende pour le premier attribut (la couleur)
   if (g$windows > 0) {plot.new()
     par(mar=c(0,0,0,0))
-    legend(x="center",
-           legend = levels(STP),
-           pch = 21,
-           col = "black",
-           pt.bg = brewer.pal(length (levels (STP)),"Set1"),
-           cex = g$windows + 1,
-           title = g$attr1,
-           bty = "n",
-           horiz = TRUE,
-           pt.cex = 4)}
+    legend(
+      x = "center",
+      legend = levels(STP),
+      pch = 21,
+      col = "black",
+      pt.bg = brewer.pal(length (levels (STP)),"Set1"),
+      cex = g$windows + 1,
+      title = g$attr1,
+      bty = "n",
+      horiz = TRUE,
+      pt.cex = 4
+    )
+  }
 
   # la légende pour le second attribut (la forme)
   # faire correspondre les pch aux formes employées
 
   if (g$windows > 1) {plot.new()
     par(mar=c(0,0,0,0))
-    legend(x="center",
-           legend = levels(factor(igraph::V(g)$id2)),
-           pch = c(19,15,18,17,11,10)[1:length(levels(factor(igraph::V(g)$id2)))],
-           col = "black",
-           cex = 3,
-           title = g$attr2,
-           bty = "n",
-           horiz = TRUE,
-           pt.cex = 4)}
-  if (!is.null(igraph::V(g)$id2)) {vertex.shape <- c("circle", "square", "losange","rectangle","csquare","sphere")[factor(igraph::V(g)$id2)]}
+    legend(
+      x="center",
+      legend = levels(factor(igraph::V(g)$id2)),
+      pch = c(19,15,18,17,11,10)[1:length(levels(factor(igraph::V(g)$id2)))],
+      col = "black",
+      cex = 3,
+      title = g$attr2,
+      bty = "n",
+      horiz = TRUE,
+      pt.cex = 4
+    )
+  }
+
+  if (!is.null(igraph::V(g)$id2)) {
+    vertex.shape <- c("circle", "square", "losange","rectangle","csquare","sphere")[factor(igraph::V(g)$id2)]
+  }
 
   # Et on ferme le tunnel
   dev.off()
-
 
   ## Version du pdf avec les histogrammes en supplément pour attr STP
 
   if (g$windows == 1) {
     nomfichier <- paste (date,".",oeuvre,".s",seuil,".a1.hist.pdf",sep="")
-    pdf("output-1.pdf",height = 14 + g$windows, width = 19.8)
+    pdf("out/output-1.pdf", height = 14 + g$windows, width = 19.8)
     # on détermine la disposition des graphs
     graphprop <- matrix(c(1, 2, 1, 3, 4, 4), nrow = 3, ncol = 2, byrow = TRUE)
-    layout (graphprop,
-            widths = c(5,1), heights = c(5,5,1))
-    # le réseau principal
-    par(mar=c(0,0,3,0))
-    plot(g,
-         vertex.label = vertex.label,
-         vertex.size = vertex.size,
-         vertex.color = vertex.color,
-         vertex.shape = vertex.shape,
-         vertex.label.color = vertex.label.color,
-         vertex.label.dist = vertex.label.dist,
-         vertex.label.degree = vertex.label.degree,
-         vertex.label.family = vertex.label.family,
-         vertex.label.cex = vertex.label.cex,
-         edge.width = edge.width,
-         edge.color = edge.color
+    layout(
+      graphprop,
+      widths = c(5,1),
+      heights = c(5,5,1)
     )
-    title (main = titre, cex.main = 3, family ="mono")
+    # le réseau principal
+    par(mar = c(0,0,3,0))
+    plot(g,
+      vertex.label = vertex.label,
+      vertex.size = vertex.size,
+      vertex.color = vertex.color,
+      vertex.shape = vertex.shape,
+      vertex.label.color = vertex.label.color,
+      vertex.label.dist = vertex.label.dist,
+      vertex.label.degree = vertex.label.degree,
+      vertex.label.family = vertex.label.family,
+      vertex.label.cex = vertex.label.cex,
+      edge.width = edge.width,
+      edge.color = edge.color
+    )
+    title (main = titre, cex.main = 3, family = "mono")
     # les histogrammes sur le côté
-    par(mar=c(1,0,3,1))
-    barplot (table (STP), col = brewer.pal (length (levels (STP)),"Set1"),
-             names.arg = "", cex.main =2,family ="mono",
+    par(mar = c(1,0,3,1))
+    barplot(table (STP), col = brewer.pal (length (levels (STP)),"Set1"),
+             names.arg = "", cex.main =2,family = "mono",
              main = "Répartition STP")
     par(mar=c(0,0,3,1))
-    STPcentr <- data.frame (attr = STP,deg = as.numeric (igraph::degree(g)))
+    STPcentr <- data.frame(attr = STP, deg = as.numeric(igraph::degree(g)))
     rez <- aggregate(STPcentr$deg, by=list(STPcentr$attr), FUN=sum)
-    barplot (rez$x,
+    barplot(rez$x,
              #names.arg = rez$Group.1,
              col = brewer.pal (length (levels (rez$Group.1)),"Set1"),
-             names.arg = "", cex.main =2,family ="mono",
+             names.arg = "", cex.main = 2, family = "mono",
              main ="STP * centralité")
     # la légende pour le premier attribut (la couleur)
     plot.new()
