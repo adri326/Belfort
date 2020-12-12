@@ -27,13 +27,13 @@ cd character-graph
 Make sure to have [R](https://wiki.archlinux.org/index.php/R) installed and run the main script:
 
 ```sh
-R -f main.R --args 5 data/2013.cloud_atlas-adj.csv data/2013.cloud_atlas-attr.csv
+R -f main.R --args "Cloud Atlas" 5 data/2013.cloud_atlas-adj.csv data/2013.cloud_atlas-attr.csv
 ```
 
 The syntax for running the main script as-is is:
 
 ```sh
-R -f main.R --args <threshold> <presence-file> [<property-1> [<property-2>]]
+R -f main.R --args <name> <threshold> <presence-file> [<property-1> [<property-2>]]
 ```
 
 - `<threshold>` is the minimum number of simultaneous presence that a character must have (a value of 10 is usually enough to filter out most secondary "noise" characters)
