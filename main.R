@@ -43,12 +43,12 @@ plot <- ggraph::ggraph(g, layout = "fr") +
 if (length(args) == 4) {
   plot <- plot +
     ggraph::geom_node_point(ggplot2::aes(size = igraph::degree(g), color = id1)) +
-    ggplot2::scale_colour_brewer(palette = "Set1", "Attribut 1")
+    ggplot2::scale_colour_viridis_d(na.value = "grey10", name = "Attribut 1")
 } else if (length(args) > 4) {
   plot <- plot +
     ggraph::geom_node_point(ggplot2::aes(size = igraph::degree(g), fill = id1, shape = id2)) +
     ggplot2::scale_shape_manual(values = c(21, 22, 23, 24, 25, 8), "Attribut 2") +
-    ggplot2::scale_fill_brewer(palette = "Set1", "Attribut 1") +
+    ggplot2::scale_colour_viridis_d(na.value = "grey10", name = "Attribut 1") +
     ggplot2::guides(
       fill = ggplot2::guide_legend(order = 1, override.aes = list(shape = 21))
     )
@@ -74,5 +74,14 @@ plot <- plot +
     legend.key = ggplot2::element_rect(fill = "white"),
   )
 
-ggplot2::ggsave(paste("out/", trimws(args[1]), "-", args[2], ".pdf", sep = ""), plot, width = 10, height = 7)
-ggplot2::ggsave(paste("out/", trimws(args[1]), "-", args[2], ".png", sep = ""), plot, width = 10, height = 7)
+name <- paste(trimws(args[1]), "-", args[2], sep = "")
+
+if (length(args) == 4) {
+  name <- paste(name, "-1attr", sep = "")
+}
+if (length(args) > 4) {
+  name <- paste(name, "-2attr", sep = "")
+}
+
+ggplot2::ggsave(paste("out/", name, ".pdf", sep = ""), plot, width = 10, height = 7)
+ggplot2::ggsave(paste("out/", name, ".png", sep = ""), plot, width = 10, height = 7)
